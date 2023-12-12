@@ -16,14 +16,14 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
                 Book(
                     title = rs.getString("title"),
                     author = rs.getString("author"),
-                    isReserved = rs.getBoolean("reserved")
+                    isReserved = rs.getBoolean("is_reserved")
                 )
             }
     }
 
     override fun createBook(book: Book) {
         namedParameterJdbcTemplate
-            .update("INSERT INTO BOOK (title, author, reserved) values (:title, :author, :isReserved)", mapOf(
+            .update("INSERT INTO BOOK (title, author, is_reserved) values (:title, :author, :isReserved)", mapOf(
                 "title" to book.title,
                 "author" to book.author,
                 "isReserved" to book.isReserved
@@ -37,7 +37,7 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
             isBookReserved -> throw BookReservedException("Le livre avec le titre $title est déjà réservé.")
             else -> {
                 namedParameterJdbcTemplate.update(
-                    "UPDATE BOOK SET reserved = true WHERE title = :title",
+                    "UPDATE BOOK SET is_reserved = true WHERE title = :title",
                     mapOf("title" to title)
                 )
             }
@@ -47,7 +47,7 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
     override fun isBookReserved(title: String): Boolean {
         return namedParameterJdbcTemplate
             .queryForObject(
-                "SELECT reserved FROM BOOK WHERE title = :title",
+                "SELECT is_reserved FROM BOOK WHERE title = :title",
                 mapOf("title" to title),
                 Boolean::class.java
             ) ?: throw BookNotFoundException("Le livre avec le titre $title n'existe pas.")

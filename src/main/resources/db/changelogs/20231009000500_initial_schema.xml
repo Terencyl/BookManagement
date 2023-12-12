@@ -22,7 +22,7 @@
             <column name="author" type="varchar">
                 <constraints nullable="false" />
             </column>
-            <column name="reserved" type="boolean">
+            <column name="is_reserved" type="boolean">
                 <constraints nullable="false" />
             </column>
         </createTable>

@@ -14,11 +14,10 @@ class BookController(
     @GetMapping
     fun getAllBooks(): List<BookDTO> {
         return bookUseCase.getAllBooks().map { book ->
-            val isReserved = bookUseCase.isBookReserved(book.title)
             BookDTO(
                 title = book.title,
                 author = book.author,
-                isReserved = isReserved
+                isReserved = book.isReserved
             )
         }
     }

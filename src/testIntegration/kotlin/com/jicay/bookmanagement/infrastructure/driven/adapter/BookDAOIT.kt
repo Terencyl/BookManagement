@@ -45,11 +45,11 @@ class BookDAOIT {
         performQuery(
             // language=sql
             """
-               insert into book (title, author)
+               insert into book (title, author, is_reserved)
                values 
-                   ('Hamlet', 'Shakespeare'),
-                   ('Les fleurs du mal', 'Beaudelaire'),
-                   ('Harry Potter', 'Rowling');
+                   ('Hamlet', 'Shakespeare', false),
+                   ('Les fleurs du mal', 'Baudelaire', true),
+                   ('Harry Potter', 'Rowling', true);
             """.trimIndent())
 
         // WHEN
@@ -57,9 +57,9 @@ class BookDAOIT {
 
         // THEN
         assertThat(res).containsExactlyInAnyOrder(
-            Book("Hamlet", "Shakespeare"),
-            Book("Les fleurs du mal", "Beaudelaire"),
-            Book("Harry Potter", "Rowling")
+            Book("Hamlet", "Shakespeare", false),
+            Book("Les fleurs du mal", "Baudelaire", true),
+            Book("Harry Potter", "Rowling", true)
         )
     }
 
@@ -80,6 +80,7 @@ class BookDAOIT {
         assertThat(res[0]["id"] is Int).isTrue()
         assertThat(res[0]["title"]).isEqualTo("Les misérables")
         assertThat(res[0]["author"]).isEqualTo("Victor Hugo")
+        assertThat(res[0]["is_reserved"]).isEqualTo(false)
     }
 
     protected fun performQuery(sql: String): List<Map<String, Any>> {

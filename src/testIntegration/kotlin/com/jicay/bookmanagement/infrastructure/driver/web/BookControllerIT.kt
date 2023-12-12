@@ -29,7 +29,7 @@ class BookControllerIT {
     @Test
     fun `rest route get books`() {
         // GIVEN
-        every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B"))
+        every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B", false))
 
         // WHEN
         mockMvc.get("/books")
@@ -42,8 +42,32 @@ class BookControllerIT {
                     """
                         [
                           {
-                            "name": "A",
-                            "author": "B"
+                            "title": "A",
+                            "author": "B",
+                            "isReserved": false
+                          }
+                        ]
+                    """.trimIndent()
+                ) }
+            }
+    }
+
+    @Test
+    fun `rest route get books shows reservation`(){
+        every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B", true))
+
+        mockMvc.get("/books")
+            .andExpect {
+                status { isOk() }
+                content { content { APPLICATION_JSON } }
+                content { json(
+                    // language=json
+                    """
+                        [
+                          {
+                            "title": "A",
+                            "author": "B",
+                            "isReserved": true
                           }
                         ]
                     """.trimIndent()
@@ -59,7 +83,7 @@ class BookControllerIT {
             // language=json
             content = """
                 {
-                  "name": "Les misérables",
+                  "title": "Les misérables",
                   "author": "Victor Hugo"
                 }
             """.trimIndent()
@@ -85,7 +109,7 @@ class BookControllerIT {
             // language=json
             content = """
                 {
-                  "title": "Les misérables",
+                  "name": "Les misérables",
                   "author": "Victor Hugo"
                 }
             """.trimIndent()
