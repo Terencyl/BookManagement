@@ -26,6 +26,7 @@ class BookControllerIT {
     @Autowired
     lateinit var mockMvc: MockMvc
 
+    //TODO SHOULD FAIL WHEN EXPECTED CONTENT DOES NOT HAVE "RESERVED"
     @Test
     fun `rest route get all books`() {
         // GIVEN
@@ -43,7 +44,8 @@ class BookControllerIT {
                         [
                           {
                             "title": "A",
-                            "author": "B"
+                            "author": "B",
+                            "reserved": true
                           }
                         ]
                     """.trimIndent()
