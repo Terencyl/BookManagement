@@ -56,7 +56,7 @@ class BookStepDefs {
             mapOf(
                 "title" to line["title"],
                 "author" to line["author"],
-                "reserved" to line["isReserved"].toString().toBoolean()
+                "reserved" to line["reserved"].toString().toBoolean()
             )
         }
 

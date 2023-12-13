@@ -19,16 +19,18 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BookDTO'
+                  $ref: '#/components/schemas/BookDTOWithReservation'
     post:
       tags:
-      - book-controller
+        - book-controller
       operationId: addBook
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BookDTO'
+              anyOf:
+                - $ref: '#/components/schemas/BookDTO'
+                - $ref: '#/components/schemas/BookDTOWithReservation'
         required: true
       responses:
         "201":
@@ -38,7 +40,16 @@ components:
     BookDTO:
       type: object
       properties:
-        name:
+        title:
           type: string
         author:
           type: string
+    BookDTOWithReservation:
+        type: object
+        properties:
+          title:
+            type: string
+          author:
+            type: string
+          reserved:
+            type: boolean

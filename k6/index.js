@@ -19,7 +19,7 @@ export function test_api_endpoints_config() {
             `http://localhost:8080/books`,
             `
             {
-                "name": "${useCase.name}",
+                "name": "${useCase.title}",
                 "author": "${useCase.author}"
             }
             `,

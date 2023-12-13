@@ -17,7 +17,7 @@ class BookController(
             BookDTO(
                 title = book.title,
                 author = book.author,
-                isReserved = book.isReserved
+                reserved = book.reserved
             )
         }
     }

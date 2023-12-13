@@ -16,17 +16,17 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
                 Book(
                     title = rs.getString("title"),
                     author = rs.getString("author"),
-                    isReserved = rs.getBoolean("is_reserved")
+                    reserved = rs.getBoolean("is_reserved")
                 )
             }
     }
 
     override fun createBook(book: Book) {
         namedParameterJdbcTemplate
-            .update("INSERT INTO BOOK (title, author, is_reserved) values (:title, :author, :isReserved)", mapOf(
+            .update("INSERT INTO BOOK (title, author, is_reserved) values (:title, :author, :reserved)", mapOf(
                 "title" to book.title,
                 "author" to book.author,
-                "isReserved" to book.isReserved
+                "reserved" to book.reserved
             ))
     }
 

@@ -27,9 +27,9 @@ class BookControllerIT {
     lateinit var mockMvc: MockMvc
 
     @Test
-    fun `rest route get books`() {
+    fun `rest route get all books`() {
         // GIVEN
-        every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B", false))
+        every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B", true))
 
         // WHEN
         mockMvc.get("/books")
@@ -43,8 +43,7 @@ class BookControllerIT {
                         [
                           {
                             "title": "A",
-                            "author": "B",
-                            "isReserved": false
+                            "author": "B"
                           }
                         ]
                     """.trimIndent()
@@ -53,30 +52,7 @@ class BookControllerIT {
     }
 
     @Test
-    fun `rest route get books shows reservation`(){
-        every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B", true))
-
-        mockMvc.get("/books")
-            .andExpect {
-                status { isOk() }
-                content { content { APPLICATION_JSON } }
-                content { json(
-                    // language=json
-                    """
-                        [
-                          {
-                            "title": "A",
-                            "author": "B",
-                            "isReserved": true
-                          }
-                        ]
-                    """.trimIndent()
-                ) }
-            }
-    }
-
-    @Test
-    fun `rest route post book`() {
+    fun `rest route post book without reservation`() {
         justRun { bookUseCase.addBook(any()) }
 
         mockMvc.post("/books") {
@@ -95,7 +71,36 @@ class BookControllerIT {
 
         val expected = Book(
             title = "Les misérables",
-            author = "Victor Hugo"
+            author = "Victor Hugo",
+            reserved = false
+        )
+
+        verify(exactly = 1) { bookUseCase.addBook(expected) }
+    }
+
+    @Test
+    fun `rest route post book with reservation`(){
+        justRun { bookUseCase.addBook(any()) }
+
+        mockMvc.post("/books") {
+            // language=json
+            content = """
+                {
+                  "title": "Les misérables",
+                  "author": "Victor Hugo",
+                  "reserved": true
+                }
+            """.trimIndent()
+            contentType = APPLICATION_JSON
+            accept = APPLICATION_JSON
+        }.andExpect {
+            status { isCreated() }
+        }
+
+        val expected = Book(
+            title = "Les misérables",
+            author = "Victor Hugo",
+            reserved = true
         )
 
         verify(exactly = 1) { bookUseCase.addBook(expected) }

@@ -2,12 +2,12 @@ package com.jicay.bookmanagement.infrastructure.driver.web.dto
 
 import com.jicay.bookmanagement.domain.model.Book
 
-data class BookDTO(val title: String, val author: String, val isReserved: Boolean = false) {
+data class BookDTO(val title: String, val author: String, val reserved: Boolean = false) {
     fun toDomain(): Book {
         return Book(
             title = this.title,
             author = this.author,
-            isReserved = this.isReserved
+            reserved = this.reserved
         )
     }
 }
@@ -15,5 +15,5 @@ data class BookDTO(val title: String, val author: String, val isReserved: Boolea
 fun Book.toDto() = BookDTO(
     title = this.title,
     author = this.author,
-    isReserved = this.isReserved
+    reserved = this.reserved
 )
