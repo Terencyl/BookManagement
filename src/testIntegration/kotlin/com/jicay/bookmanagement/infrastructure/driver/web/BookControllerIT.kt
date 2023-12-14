@@ -30,7 +30,6 @@ class BookControllerIT {
     @Autowired
     lateinit var mockMvc: MockMvc
 
-    //TODO SHOULD FAIL WHEN EXPECTED CONTENT DOES NOT HAVE "RESERVED"
     @Test
     fun `rest route get all books`() {
         every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B", true))
