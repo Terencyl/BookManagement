@@ -7,3 +7,11 @@ Feature: the user can create and retrieve the books
       | title | author | reserved |
       | L'avare | Molière | false |
       | Les Misérables | Victor Hugo | false |
+
+  Scenario: user reserves a book and verifies its status
+    When the user reserves the book "L'avare"
+    And the user get all books
+    Then the list should contains the following books in the same order
+      | title | author | reserved |
+      | L'avare | Molière | true |
+      | Les Misérables | Victor Hugo | false |

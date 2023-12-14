@@ -50,6 +50,16 @@ class BookStepDefs {
             .statusCode(200)
     }
 
+    @When("the user reserves the book {string}")
+    fun reserveBook(title: String) {
+        given()
+            .contentType(ContentType.JSON)
+            .`when`()
+            .post("/books/$title/reserve")
+            .then()
+            .statusCode(200)
+    }
+
     @Then("the list should contains the following books in the same order")
     fun shouldHaveListOfBooks(payload: List<Map<String, Any>>) {
         val expectedResponse = payload.map { line ->
